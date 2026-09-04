@@ -9,6 +9,9 @@ const app = express()
 
 // CORS: permitir el frontend (compara ignorando el slash final)
 const allowedOrigins = config.frontendUrl.split(',').map((u) => u.trim().replace(/\/+$/, ''))
+if (config.env === 'development' || !config.isProd) {
+  console.log('[CORS] Orígenes permitidos:', allowedOrigins)
+}
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -16,6 +19,9 @@ app.use(
       if (!origin) return callback(null, true)
       const normalized = origin.replace(/\/+$/, '')
       const allowed = allowedOrigins.includes(normalized)
+      if (config.env === 'development' || !config.isProd) {
+        console.log(`[CORS] origin=${origin} allowed=${allowed} allowList=${JSON.stringify(allowedOrigins)}`)
+      }
       callback(null, allowed)
     },
     credentials: true,
