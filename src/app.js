@@ -8,10 +8,17 @@ import { notFound, errorHandler } from './middleware/error.js'
 const app = express()
 
 // CORS: permitir el frontend (compara ignorando el slash final)
-const allowedOrigins = config.frontendUrl.split(',').map((u) => u.trim().replace(/\/+$/, ''))
-if (config.env === 'development' || !config.isProd) {
-  console.log('[CORS] Orígenes permitidos:', allowedOrigins)
-}
+// Los orígenes permitidos = env FRONTEND_URL + una lista segura de dominios de producción,
+// de modo que el CORS funcione aunque la variable no esté configurada.
+const SAFE_ORIGINS = [
+  'https://bigneton.vercel.app',
+  'http://localhost:5173',
+]
+const allowedOrigins = [
+  ...config.frontendUrl.split(',').map((u) => u.trim().replace(/\/+$/, '')),
+  ...SAFE_ORIGINS,
+]
+console.log('[CORS] Orígenes permitidos:', allowedOrigins)
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -19,9 +26,7 @@ app.use(
       if (!origin) return callback(null, true)
       const normalized = origin.replace(/\/+$/, '')
       const allowed = allowedOrigins.includes(normalized)
-      if (config.env === 'development' || !config.isProd) {
-        console.log(`[CORS] origin=${origin} allowed=${allowed} allowList=${JSON.stringify(allowedOrigins)}`)
-      }
+      console.log(`[CORS] origin=${origin} allowed=${allowed} allowList=${JSON.stringify(allowedOrigins)}`)
       callback(null, allowed)
     },
     credentials: true,
