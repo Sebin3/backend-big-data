@@ -7,10 +7,17 @@ import { notFound, errorHandler } from './middleware/error.js'
 
 const app = express()
 
-// CORS: permitir el frontend
+// CORS: permitir el frontend (compara ignorando el slash final)
+const allowedOrigins = config.frontendUrl.split(',').map((u) => u.trim().replace(/\/+$/, ''))
 app.use(
   cors({
-    origin: config.frontendUrl.split(',').map((u) => u.trim()),
+    origin: (origin, callback) => {
+      // Peticiones sin origen (curl, server-to-server) se permiten
+      if (!origin) return callback(null, true)
+      const normalized = origin.replace(/\/+$/, '')
+      const allowed = allowedOrigins.includes(normalized)
+      callback(null, allowed)
+    },
     credentials: true,
   }),
 )
