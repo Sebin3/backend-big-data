@@ -16,6 +16,7 @@ const config = {
 
   port: numberOr(process.env.PORT, 4000),
   frontendUrl: process.env.FRONTEND_URL || 'http://localhost:5173',
+  publicAppUrl: process.env.PUBLIC_APP_URL || (process.env.FRONTEND_URL || 'http://localhost:5173').split(',')[0].trim(),
 
   supabase: {
     url: process.env.SUPABASE_URL || '',
@@ -28,12 +29,16 @@ const config = {
     datasetAccessTable: process.env.SUPABASE_DATASET_ACCESS_TABLE || 'dataset_access',
     cleaningLogsTable: process.env.SUPABASE_CLEANING_LOGS_TABLE || 'cleaning_logs',
     invitationsTable: process.env.SUPABASE_INVITATIONS_TABLE || 'invitations',
+    contactRequestsTable: process.env.SUPABASE_CONTACT_REQUESTS_TABLE || 'contact_requests',
+    contactMessagesTable: process.env.SUPABASE_CONTACT_MESSAGES_TABLE || 'contact_messages',
   },
 
   google: {
     clientId: process.env.GOOGLE_CLIENT_ID || '',
     clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
     redirectUri: process.env.GOOGLE_REDIRECT_URI || '',
+    gmailRefreshToken: process.env.GOOGLE_GMAIL_REFRESH_TOKEN || '',
+    gmailInbox: process.env.GMAIL_INBOX_EMAIL || '',
   },
 
   jwt: {
@@ -52,6 +57,8 @@ const config = {
       from: process.env.BREVO_FROM || 'stvinpz@11344134.brevosend.com',
       name: process.env.BREVO_FROM_NAME || 'SendAquaLM',
     },
+    contactNotification: process.env.CONTACT_NOTIFICATION_EMAIL || '',
+    contactReplyTo: process.env.CONTACT_REPLY_TO || '',
   },
 }
 

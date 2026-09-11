@@ -20,3 +20,5 @@ Thumbs.db
 # Otros
 dist/
 coverage/
+
+.sql/

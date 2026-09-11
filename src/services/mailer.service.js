@@ -10,7 +10,7 @@ let apiFetch = null
  * Envía un correo a través de Brevo.
  * Devuelve la información de la respuesta.
  */
-export async function sendEmail({ to, subject, text = '', html = null }) {
+export async function sendEmail({ to, subject, text = '', html = null, replyTo = null }) {
   if (!config.email.brevo.apiKey) {
     throw new Error('Falta BREVO_API_KEY en el .env')
   }
@@ -25,7 +25,8 @@ export async function sendEmail({ to, subject, text = '', html = null }) {
       sender: { name: config.email.brevo.name, email: config.email.brevo.from },
       to: [{ email: to }],
       subject,
-      htmlContent: html || text,
+      ...(html ? { htmlContent: html } : { textContent: text }),
+      ...(replyTo ? { replyTo: { email: replyTo } } : {}),
     }),
   })
   if (!res.ok) {

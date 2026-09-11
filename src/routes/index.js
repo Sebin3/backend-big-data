@@ -5,6 +5,7 @@ import tableRoutes from './table.routes.js'
 import pipelineRoutes from './pipeline.routes.js'
 import userRoutes from './user.routes.js'
 import invitationRoutes from './invitation.routes.js'
+import contactRequestRoutes from './contactRequest.routes.js'
 
 const router = Router()
 
@@ -14,6 +15,7 @@ router.get('/health', (_req, res) => {
 
 // Autenticación (pública)
 router.use('/auth', authRoutes)
+router.use('/contact-requests', contactRequestRoutes)
 
 // Módulos de datos (requieren token)
 router.use('/datasets', datasetRoutes)

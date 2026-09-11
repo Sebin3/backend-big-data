@@ -7,11 +7,10 @@ import { notFound, errorHandler } from './middleware/error.js'
 
 const app = express()
 
-// CORS: permitir el frontend (compara ignorando el slash final)
-// Los orígenes permitidos = env FRONTEND_URL + una lista segura de dominios de producción,
-// de modo que el CORS funcione aunque la variable no esté configurada.
+
 const SAFE_ORIGINS = [
   'https://bigneton.vercel.app',
+  'https://big-data-crm.vercel.app',
   'http://localhost:5173',
 ]
 const allowedOrigins = [
