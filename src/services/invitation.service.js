@@ -149,7 +149,7 @@ export async function consumeInvitation({ code, email }) {
  */
 export async function sendInvitationEmail({ to, code, role, expiresAt }) {
   const brand = config.email.brevo.name || 'SendAquaLM'
-  const registerUrl = `${config.frontendUrl}/register?code=${code}`
+  const registerUrl = `${config.frontendUrl}/register?code=${encodeURIComponent(code)}&email=${encodeURIComponent(to)}`
   const roleLabel = { analyst: 'Analista', admin: 'Administrador', auditor: 'Auditor' }[role] || role
   const exp = expiresAt
     ? new Date(expiresAt).toLocaleDateString('es-PE', { day: '2-digit', month: 'long', year: 'numeric' })
