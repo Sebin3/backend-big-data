@@ -1,4 +1,5 @@
 import rateLimit from 'express-rate-limit'
+import config from '../config/index.js'
 
 /**
  * Limitador global de solicitudes a la API.
@@ -8,6 +9,7 @@ export const globalLimiter = rateLimit({
   limit: 300,
   standardHeaders: true,
   legacyHeaders: false,
+  skip: () => !config.isProd,
   message: { error: { code: 'RATE_LIMIT', message: 'Demasiadas solicitudes. Intenta más tarde.' } },
 })
 
